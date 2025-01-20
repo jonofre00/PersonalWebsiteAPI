@@ -3,7 +3,7 @@
 namespace ResumeAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/")]
     public class HomeController : Controller
     {
         [HttpGet(Name = "GetSkillsList")]
