@@ -1,7 +1,9 @@
-using NetlifySharp;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using ResumeAPI.Data.Context;
 
 var builder = WebApplication.CreateBuilder(args);
-var client = new NetlifyClient("nfp_MpQQvXLqNinQBGmH24LW745JKadgL6Q7b48f");
 
 // Add services to the container.
 
@@ -17,6 +19,17 @@ builder.Services.ConfigureSwaggerGen(setup =>
         Title = "Resume Endpoints",
         Version = "v1"
     });
+});
+
+string? defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (defaultConnectionString == null)
+{
+    throw new Exception($"Connectionstring: DefaultConnection");
+}
+
+builder.Services.AddDbContext<ResumeAPIContext>(options =>
+{
+    options.UseSqlServer(defaultConnectionString);
 });
 
 var app = builder.Build();

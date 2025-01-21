@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ResumeAPI.Data.Context;
+using ResumeAPI.Data.Models;
 
 namespace ResumeAPI.Controllers
 {
@@ -6,11 +8,18 @@ namespace ResumeAPI.Controllers
     [Route("/")]
     public class HomeController : Controller
     {
-        [HttpGet(Name = "GetSkillsList")]
-        public IEnumerable<string> Get()
+        private readonly ResumeAPIContext _dbContext;
+        public HomeController(ResumeAPIContext context)
         {
-            List<string> skills = new List<string>(){ "SQL", "C#", "ASP.NET Core" };
-            return skills.ToArray();
+            _dbContext = context;
+        }
+
+        [HttpGet(Name = "GetSkillsList")]
+        public IEnumerable<Skills> Get()
+        {
+
+            var skills = _dbContext.Skills.ToArray();
+            return skills;
         }
     }
 }
